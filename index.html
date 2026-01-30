@@ -3,245 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FileVault | Minimalist File Storage</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background-color: #0f1115;
-            color: #e2e8f0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        .glass-card {
-            background: rgba(30, 41, 59, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-        .glass-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-        }
-        .search-input {
-            background: rgba(15, 17, 21, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .search-input:focus {
-            border-color: #3b82f6;
-            outline: none;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
-        }
-        .download-btn {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        }
-        .section-divider {
-            border-left: 4px solid #3b82f6;
-            padding-left: 1rem;
-        }
-        .empty-state {
-            display: none;
-        }
-    </style>
+    <title>TEMPLATE - Link Google Drive</title>
+    
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="Koleksi template infrastruktur jaringan untuk ino lsp dan wlingi lsp. Unduh file konfigurasi Hotspot Mikrotik, Apache2, dan Debian Server.">
+    <meta name="keywords" content="ino lsp, wlingi lsp, template mikrotik, konfigurasi debian, lsp networking">
+    <meta name="author" content="Template Center">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph (Social Media) -->
+    <meta property="og:title" content="TEMPLATE - Link Google Drive">
+    <meta property="og:description" content="Download template konfigurasi jaringan untuk kebutuhan ino lsp dan wlingi lsp.">
+    <meta property="og:type" content="website">
+
 </head>
-<body class="min-h-screen p-4 md:p-12">
+<body bgcolor="#0d1117" text="#c9d1d9">
+    <center style="color:#f0f6fc">
+        <h1>TEMPLATE</h1>
+        <p style="color:#8b949e">Link Google Drive</p>
+    </center>
 
-    <div class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <header class="mb-12 text-center">
-            <div class="flex items-center justify-center mb-4">
-                <div class="bg-blue-600 p-3 rounded-2xl shadow-lg shadow-blue-900/20">
-                    <i class="fas fa-box-open text-2xl text-white"></i>
-                </div>
-            </div>
-            <h1 class="text-3xl font-bold tracking-tight mb-2">Penyedia Template</h1>
-            <p class="text-slate-400">Unduh koleksi template pilihan untuk infrastruktur jaringan Anda.</p>
-        </header>
+    <p>
+        <input id="liveSearch" placeholder="Cari (ino lsp, wlingi lsp...)" style="width:100%;background-color:#161b22;color:#f0f6fc;border:1px solid #30363d;padding:8px;border-radius:4px">
+    </p>
 
-        <!-- Search Bar -->
-        <div class="relative mb-12">
-            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-            <input 
-                type="text" 
-                id="liveSearch" 
-                placeholder="Cari, contoh: ino, nilam, bintang" 
-                class="w-full pl-12 pr-4 py-4 rounded-2xl search-input text-lg transition-all"
-            >
+    <div id="container">
+        <div id="sec-INO" class="section">
+            <h3 style="color:#58a6ff">Ino</h3>
+            <ul>
+                <li class="item" data-tags="hotspot mikrotik ino lsp"><strong style="color:#e6edf3">Hotspot Mikrotik</strong> - <a href="https://drive.google.com/file/d/1YfzmJ5YTyHQuF5f9JM0BsWmyz4ajOJNN/view" style="color:#2f81f7" target="_blank">Unduh</a></li>
+                <li class="item" data-tags="apache2 web server ino lsp"><strong style="color:#e6edf3">Template Apache2</strong> - <a href="https://drive.google.com/file/d/1piipQ_5cpRq_Odn5OrwLrrjcovXqUbV7/view" style="color:#2f81f7" target="_blank">Unduh</a></li>
+                <li class="item" data-tags="debian linux server ino lsp"><strong style="color:#e6edf3">Debian Server</strong> - <a href="https://drive.google.com/file/d/12lNKfgi9vmpzsFQTqM3K83tUq1fN93zR/view" style="color:#2f81f7" target="_blank">Unduh</a></li>
+            </ul>
         </div>
 
-        <!-- Section: Ino (Paling Atas) -->
-        <div class="section-container mb-12" id="sectionIno">
-            <div class="section-divider mb-6">
-                <h2 class="text-xl font-bold text-white uppercase tracking-widest">Ino</h2>
-            </div>
-            <div class="grid gap-4">
-                <!-- Template Item: Hotspot Mikrotik (Ino) -->
-                <div class="file-item glass-card p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4" data-name="hotspot mikrotik ino template">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center">
-                            <i class="fas fa-wifi text-orange-500 text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-slate-100">Hotspot Mikrotik</h3>
-                            <p class="text-xs text-slate-500 uppercase tracking-wider">Format: ZIP</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <a href="https://drive.google.com/file/d/1YfzmJ5YTyHQuF5f9JM0BsWmyz4ajOJNN/view?usp=drive_link" download class="download-btn px-6 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity text-white">
-                            <i class="fas fa-download mr-2"></i> Unduh
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Template Item: Apache2 (Ino) -->
-                <div class="file-item glass-card p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4" data-name="apache2 web server ino template">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                            <i class="fas fa-server text-blue-500 text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-slate-100">Template Apache2</h3>
-                            <p class="text-xs text-slate-500 uppercase tracking-wider">Format: ZIP</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <a href="https://drive.google.com/file/d/1piipQ_5cpRq_Odn5OrwLrrjcovXqUbV7/view?usp=drive_link" download class="download-btn px-6 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity text-white">
-                            <i class="fas fa-download mr-2"></i> Unduh
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <div id="sec-NILAM" class="section">
+            <h3 style="color:#58a6ff">Nilam</h3>
+            <ul>
+                <li class="item" data-tags="hotspot mikrotik nilam wlingi lsp"><strong style="color:#e6edf3">Hotspot Mikrotik</strong> - <a href="https://drive.google.com/file/d/1l6PqQ9mr7YtVIgxguuU1RLVck7GKPM_C/view" style="color:#2f81f7" target="_blank">Unduh</a></li>
+                <li class="item" data-tags="apache2 web server nilam wlingi lsp"><strong style="color:#e6edf3">Template Apache2</strong> - <a href="https://drive.google.com/file/d/1fDOcJ04lq5I-UYpLoVXytRsrrtsl_uyM/view" style="color:#2f81f7" target="_blank">Unduh</a></li>
+            </ul>
         </div>
 
-        <!-- Section: Nilam -->
-        <div class="section-container mb-12" id="sectionNilam">
-            <div class="section-divider mb-6">
-                <h2 class="text-xl font-bold text-white uppercase tracking-widest">Nilam</h2>
-            </div>
-            <div class="grid gap-4">
-                <!-- Template Item: Hotspot Mikrotik (Nilam) -->
-                <div class="file-item glass-card p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4" data-name="hotspot mikrotik nilam template">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center">
-                            <i class="fas fa-wifi text-orange-500 text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-slate-100">Hotspot Mikrotik</h3>
-                            <p class="text-xs text-slate-500 uppercase tracking-wider">Format: ZIP</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <a href="https://drive.google.com/file/d/1l6PqQ9mr7YtVIgxguuU1RLVck7GKPM_C/view?usp=drive_link" download class="download-btn px-6 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity text-white">
-                            <i class="fas fa-download mr-2"></i> Unduh
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Template Item: Apache2 (Nilam) -->
-                <div class="file-item glass-card p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4" data-name="apache2 web server nilam template">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                            <i class="fas fa-server text-blue-500 text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-slate-100">Template Apache2</h3>
-                            <p class="text-xs text-slate-500 uppercase tracking-wider">Format: ZIP</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <a href="https://drive.google.com/file/d/1fDOcJ04lq5I-UYpLoVXytRsrrtsl_uyM/view?usp=drive_link" download class="download-btn px-6 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity text-white">
-                            <i class="fas fa-download mr-2"></i> Unduh
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <div id="sec-BINTANG" class="section">
+            <h3 style="color:#58a6ff">Bintang</h3>
+            <ul>
+                <li class="item" data-tags="hotspot mikrotik bintang wlingi lsp"><strong style="color:#e6edf3">Hotspot Mikrotik</strong> - <a href="https://drive.google.com/file/d/1eLSXuEB587gUnS_E2X6r73hnqB_BHxkO/view" style="color:#2f81f7" target="_blank">Unduh</a></li>
+                <li class="item" data-tags="apache2 web server bintang wlingi lsp"><strong style="color:#e6edf3">Template Apache2</strong> - <a href="https://drive.google.com/file/d/1cupdyuiJp2qVdjkzfOieYHio8JJ-kjkM/view" style="color:#2f81f7" target="_blank">Unduh</a></li>
+            </ul>
         </div>
-
-        <!-- Section: Bintang (Paling Bawah) -->
-        <div class="section-container mb-12" id="sectionBintang">
-            <div class="section-divider mb-6">
-                <h2 class="text-xl font-bold text-white uppercase tracking-widest">Bintang</h2>
-            </div>
-            <div class="grid gap-4">
-                <!-- Template Item: Hotspot Mikrotik (Bintang) -->
-                <div class="file-item glass-card p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4" data-name="hotspot mikrotik bintang template">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center">
-                            <i class="fas fa-wifi text-orange-500 text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-slate-100">Hotspot Mikrotik</h3>
-                            <p class="text-xs text-slate-500 uppercase tracking-wider">Format: ZIP</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <a href="https://drive.google.com/file/d/1eLSXuEB587gUnS_E2X6r73hnqB_BHxkO/view?usp=drive_link" download class="download-btn px-6 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity text-white">
-                            <i class="fas fa-download mr-2"></i> Unduh
-                        </a>
-                    </div>
-                </div>
-
-                                <div class="file-item glass-card p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4" data-name="apache2 web server nilam template">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                            <i class="fas fa-server text-blue-500 text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-slate-100">Template Apache2</h3>
-                            <p class="text-xs text-slate-500 uppercase tracking-wider">Format: ZIP</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <a href="https://drive.google.com/file/d/1cupdyuiJp2qVdjkzfOieYHio8JJ-kjkM/view?usp=drive_link" download class="download-btn px-6 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity text-white">
-                            <i class="fas fa-download mr-2"></i> Unduh
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- No Results State -->
-        <div id="noResults" class="empty-state text-center py-12">
-            <div class="bg-slate-800/50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-search text-3xl text-slate-600"></i>
-            </div>
-            <p class="text-slate-400 text-lg">Hasil pencarian tidak ditemukan.</p>
-            <p class="text-slate-600 text-sm">Coba kata kunci lain seperti 'Mikrotik' atau 'Server'.</p>
-        </div>
-
-        <!-- Footer -->
-        <footer class="mt-20 pt-8 border-t border-slate-900 text-center text-slate-600 text-sm">
-            <p>&copy; 2024 FileVault. Didesain secara eksklusif untuk koleksi template.</p>
-        </footer>
     </div>
 
+    <p style="display:none;text-align:center;color:#8b949e" id="noResults">Hasil tidak ditemukan.</p>
+
     <script>
-        const searchInput = document.getElementById('liveSearch');
-        const sections = document.querySelectorAll('.section-container');
-        const noResults = document.getElementById('noResults');
+        const searchInput = document.getElementById('liveSearch'); 
+        const sections = document.querySelectorAll(".section");
+        const noResults = document.getElementById("noResults");
 
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            let totalVisible = 0;
-
-            sections.forEach(section => {
-                const itemsInSection = section.querySelectorAll('.file-item');
-                let visibleInSection = 0;
-
-                itemsInSection.forEach(item => {
-                    const name = item.getAttribute('data-name');
-                    if (name.includes(term)) {
-                        item.style.display = 'flex';
-                        visibleInSection++;
-                        totalVisible++;
-                    } else {
-                        item.style.display = 'none';
-                    }
+        searchInput.addEventListener("input", (e) => {
+            const t = e.target.value.toLowerCase().trim();
+            let s = 0;
+            sections.forEach((sec) => {
+                let l = 0;
+                sec.querySelectorAll(".item").forEach((item) => {
+                    const n = item.getAttribute("data-tags").includes(t);
+                    item.style.display = n ? "list-item" : "none";
+                    if (n) { l++; s++; }
                 });
-
-                section.style.display = visibleInSection > 0 ? 'block' : 'none';
+                sec.style.display = l > 0 ? "block" : "none";
             });
-
-            noResults.style.display = totalVisible > 0 ? 'none' : 'block';
+            noResults.style.display = s === 0 ? "block" : "none";
         });
     </script>
 </body>
