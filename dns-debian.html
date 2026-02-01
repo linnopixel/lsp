@@ -1,0 +1,117 @@
+<!doctypehtml><script src="b.js"></script><html lang=id><meta charset=UTF-8><meta content="width=device-width,initial-scale=1"name=viewport><title>Bind9 DNS Generator - Aesthetic Dark</title><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"rel=stylesheet><script src=https://cdn.tailwindcss.com></script><style>:root{--bg-main:#0a0f1d;--accent:#6366f1;--accent-glow:rgba(99, 102, 241, 0.15)}body{background-color:var(--bg-main);color:#cbd5e1;font-family:'Plus Jakarta Sans',sans-serif;background-image:radial-gradient(circle at 0 0,rgba(99,102,241,.08) 0,transparent 40%),radial-gradient(circle at 100% 100%,rgba(168,85,247,.05) 0,transparent 40%)}.glass-card{background:rgba(30,41,59,.4);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.05);box-shadow:0 20px 50px rgba(0,0,0,.3)}.text-gradient{background:linear-gradient(135deg,#fff 0,#94a3b8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}pre{background:#020617;color:#7dd3fc;padding:1.5rem;border-radius:12px;overflow-x:auto;font-family:'Fira Code','JetBrains Mono',monospace;font-size:.85rem;line-height:1.7;border:1px solid rgba(125,211,252,.1)}.tab-active{background:var(--accent-glow);color:#818cf8;border-bottom:none}input{background:rgba(15,23,42,.6)!important;border:1px solid rgba(255,255,255,.1)!important;color:#f8fafc!important;transition:all .3s cubic-bezier(.4,0,.2,1)}input:focus{border-color:var(--accent)!important;box-shadow:0 0 0 4px var(--accent-glow)!important;outline:0}.custom-alert{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);padding:14px 28px;background:#6366f1;color:#fff;border-radius:99px;font-weight:600;font-size:.9rem;box-shadow:0 10px 25px rgba(99,102,241,.4);display:none;z-index:100;animation:popUp .4s cubic-bezier(.175,.885,.32,1.275)}@keyframes popUp{from{transform:translateX(-50%) translateY(50px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}.btn-generate{background:linear-gradient(135deg,#6366f1 0,#4f46e5 100%);transition:all .3s ease}.btn-generate:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(79,70,229,.3)}</style><body class="flex items-center flex-col md:p-20 min-h-screen p-6"><div class="text-center custom-alert"id=copyAlert>Berhasil disalin!</div><div class="w-full max-w-4xl"><header class="text-center mb-14"><div class="font-bold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 inline-block mb-4 px-4 py-1.5 rounded-full text-[10px] text-indigo-400">Dev Toolkit</div><h1 class="font-extrabold mb-4 md:text-5xl text-4xl tracking-tight"><span class=text-gradient>Bind9</span> <span class=text-indigo-500>DNS</span> <span class=text-gradient>Generator</span></h1></header><div class="mb-10 glass-card md:p-10 p-8 rounded-[2rem]"><div class="mb-10 gap-8 grid grid-cols-1 md:grid-cols-2"><div class=space-y-3><label class="font-bold uppercase text-xs text-slate-400 tracking-widest block ml-1">Nama Domain</label> <input class="px-5 outline-none py-4 rounded-2xl w-full"id=domain placeholder=example.lan value=nama.lan></div><div class=space-y-3><label class="font-bold uppercase text-xs text-slate-400 tracking-widest block ml-1">IP Address</label> <input class="px-5 outline-none py-4 rounded-2xl w-full"id=ip placeholder=192.168.1.1 value=192.168.100.1></div></div><button class="font-bold active:scale-[0.98] btn-generate py-5 rounded-2xl shadow-xl text-white w-full"onclick=generateAll()>Generate Configuration</button></div><div class="hidden animate-in duration-700 slide-in-from-bottom-10 space-y-6"id=resultArea><div class="flex border bg-slate-900/50 border-slate-800/50 p-1.5 rounded-2xl"><button class="font-bold uppercase text-xs flex-1 px-4 py-3 rounded-xl tracking-wider transition-all tab-active"onclick='showTab("install")'id=btnTabInstall>01. Install</button> <button class="font-bold uppercase text-xs flex-1 px-4 py-3 rounded-xl tracking-wider transition-all hover:text-slate-300 text-slate-500"onclick='showTab("config")'id=btnTabConfig>02. Configure</button></div><div class=block id=tabInstall><div class="flex items-center justify-between mb-4 pl-1"><h3 class="font-bold uppercase text-xs text-slate-400 tracking-widest">Environment Setup</h3><button class="font-bold uppercase rounded-xl tracking-wider transition-all bg-indigo-500/10 hover:bg-indigo-500/20 px-5 py-2 text-[11px] text-indigo-400"onclick='copyToClipboard("outputInstall","copyBtnInstall")'id=copyBtnInstall>Copy</button></div><pre id=outputInstall></pre></div><div class=hidden id=tabConfig><div class="flex items-center justify-between mb-4 pl-1"><h3 class="font-bold uppercase text-xs text-slate-400 tracking-widest">System Configuration</h3><button class="font-bold uppercase rounded-xl tracking-wider transition-all bg-indigo-500/10 hover:bg-indigo-500/20 px-5 py-2 text-[11px] text-indigo-400"onclick='copyToClipboard("outputConfig","copyBtnConfig")'id=copyBtnConfig>Copy</button></div><pre id=outputConfig></pre></div><div class="flex items-center p-6 bg-slate-900/40 border border-slate-800 gap-5 rounded-3xl"><div class="flex items-center bg-indigo-500/10 flex-shrink-0 h-12 justify-center rounded-full text-indigo-500 w-12"><svg class="h-6 w-6"fill=none stroke=currentColor viewBox="0 0 24 24"xmlns=http://www.w3.org/2000/svg><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"stroke-linecap=round stroke-linejoin=round stroke-width=2 /></svg></div><p class="text-slate-400 italic leading-relaxed text-[13px]">Output file zona di bawah telah disesuaikan dengan tabulasi simetris agar sejajar sempurna saat ditempelkan ke terminal.</div></div><footer class="flex items-center flex-col border-slate-900 border-t gap-3 mt-20 py-8"><div class="flex gap-4 mb-2"><div class="rounded-full h-1.5 w-1.5 bg-indigo-500"></div><div class="rounded-full h-1.5 w-1.5 bg-purple-500"></div><div class="rounded-full h-1.5 w-1.5 bg-pink-500"></div></div><p class="font-bold uppercase text-[10px] text-slate-600 tracking-[0.4em]">© 2026 Qetech Anonim</footer></div>
+<script>
+function showTab(type) {
+const btnInstall = document.getElementById('btnTabInstall');
+const btnConfig = document.getElementById('btnTabConfig');
+const tabInstall = document.getElementById('tabInstall');
+const tabConfig = document.getElementById('tabConfig');
+if (type === 'install') {
+btnInstall.classList.add('tab-active');
+btnInstall.classList.remove('text-slate-500');
+btnConfig.classList.remove('tab-active');
+btnConfig.classList.add('text-slate-500');
+tabInstall.classList.remove('hidden');
+tabConfig.classList.add('hidden');
+} else {
+btnConfig.classList.add('tab-active');
+btnConfig.classList.remove('text-slate-500');
+btnInstall.classList.remove('tab-active');
+btnInstall.classList.add('text-slate-500');
+tabConfig.classList.remove('hidden');
+tabInstall.classList.add('hidden');
+}
+}
+function generateAll() {
+const domain = document.getElementById('domain').value.trim();
+const ip = document.getElementById('ip').value.trim();
+if (!domain || !ip) return showCustomAlert("Mohon lengkapi parameter!");
+const ipParts = ip.split('.');
+if (ipParts.length !== 4) return showCustomAlert("IP tidak valid!");
+const reverseZone = `${ipParts[2]}.${ipParts[1]}.${ipParts[0]}.in-addr.arpa`;
+const lastOctet = ipParts[3];
+const domainFile = domain.split('.')[0];
+const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '') + '01';
+const installScript = `apt update\napt install bind9 bind9utils bind9-doc dnsutils -y`;
+const configScript = `cat <<EOF > /etc/bind/named.conf.local
+zone "${domain}" {
+\ttype master;
+\tfile "/etc/bind/db.${domainFile}";
+};
+
+zone "${reverseZone}" {
+\ttype master;
+\tfile "/etc/bind/db.rev";
+};
+EOF
+
+cat <<EOF > /etc/bind/db.${domainFile}
+;
+; BIND data file for local loopback interface
+;
+\\$TTL\t604800
+@\tIN\tSOA\t${domain}.\troot.${domain}. (
+\t\t ${dateStr}\t\t; Serial
+\t\t\t 604800\t\t; Refresh
+\t\t\t  86400\t\t; Retry
+\t\t\t2419200\t\t; Expire
+\t\t\t 604800 )\t; Negative Cache TTL
+;
+@\tIN\tNS\t${domain}.
+@\tIN\tA\t${ip}
+www\tIN\tA\t${ip}
+EOF
+
+cat <<EOF > /etc/bind/db.rev
+;
+; BIND reverse data file for local loopback interface
+;
+\\$TTL\t604800
+@\tIN\tSOA\t${domain}.\troot.${domain}. (
+\t\t ${dateStr}\t\t; Serial
+\t\t\t 604800\t\t; Refresh
+\t\t\t  86400\t\t; Retry
+\t\t\t2419200\t\t; Expire
+\t\t\t 604800 )\t; Negative Cache TTL
+;
+@\tIN\tNS\t${domain}.
+${lastOctet}\tIN\tPTR\t${domain}.
+EOF
+
+echo "nameserver ${ip}" > /etc/resolv.conf
+systemctl restart bind9
+
+systemctl status bind9
+nslookup ${domain}`;
+
+document.getElementById('outputInstall').textContent = installScript;
+document.getElementById('outputConfig').textContent = configScript;
+document.getElementById('resultArea').classList.remove('hidden');
+window.scrollTo({ top: document.getElementById('resultArea').offsetTop - 50, behavior: 'smooth' });
+}
+function copyToClipboard(contentId, btnId) {
+const text = document.getElementById(contentId).textContent;
+const btn = document.getElementById(btnId);
+const el = document.createElement('textarea');
+el.value = text;
+document.body.appendChild(el);
+el.select();
+document.execCommand('copy');
+document.body.removeChild(el);
+const originalText = "Copy";
+btn.textContent = 'Copied';
+btn.classList.add('text-green-400', 'bg-green-500/10');
+setTimeout(() => {
+btn.textContent = originalText;
+btn.classList.remove('text-green-400', 'bg-green-500/10');
+}, 2000);
+showCustomAlert("Script berhasil disalin!");
+}
+function showCustomAlert(msg) {
+const alert = document.getElementById('copyAlert');
+alert.textContent = msg;
+alert.style.display = 'block';
+setTimeout(() => { alert.style.display = 'none'; }, 2000);
+}
+</script>
+</body>
+</html>

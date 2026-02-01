@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MikroTik Proxy Generator</title><script src="https://cdn.tailwindcss.com"></script><style>@import url(https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap);:root{--bg:#ffffff;--text:#0f172a;--sub:#64748b;--accent:#2563eb;--border:#e2e8f0;--card-bg:#f8fafc}@media (prefers-color-scheme:dark){:root{--bg:#0a0a0a;--text:#f8fafc;--sub:#94a3b8;--accent:#3b82f6;--border:#262626;--card-bg:#141414}}body{font-family:Inter,sans-serif;background-color:var(--bg);color:var(--text);transition:background-color .3s}.input-minimal{background-color:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 20px;width:100%;font-size:14px;outline:0;transition:border-color .2s}.input-minimal:focus{border-color:var(--accent)}.terminal-minimal{background-color:var(--card-bg);border:1px solid var(--border);border-radius:16px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;color:var(--text);padding:32px;overflow-x:auto;white-space:pre;min-height:120px}.btn-mode{padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;transition:.2s;color:var(--sub)}.btn-mode.active{background-color:var(--text);color:var(--bg)}.cb-pill{display:flex;align-items:center;justify-content:center;padding:12px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:.2s;font-size:13px;color:var(--sub)}.cb-pill:has(input:checked){border-color:var(--accent);background-color:rgba(37,99,235,.05);color:var(--accent)}.copy-trigger{font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--accent);cursor:pointer;text-transform:uppercase;padding:4px 8px;border-radius:6px;transition:background .2s}.copy-trigger:hover{background:rgba(37,99,235,.1)}</style></head><script src="b.js"></script><body class="antialiased p-4 md:p-8 lg:p-10"><div class="max-w-7xl mx-auto"><header class="mb-8 lg:mb-12 text-center"><h1 class="text-3xl lg:text-4xl font-extralight tracking-[0.5em] uppercase text-slate-800 dark:text-slate-200">MikroTik</h1></header><main class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20"><div class="lg:col-span-4 space-y-8"><section><h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Administrasi</h3><input type="text" id="adm" placeholder="admin@domain.com" class="input-minimal"></section><section><h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Interface</h3><div class="space-y-6"><div><span class="text-[10px] font-bold text-slate-400 mb-2 block uppercase tracking-wider">Ethernet Port</span><div class="grid grid-cols-2 gap-2" id="ec"></div></div><div><span class="text-[10px] font-bold text-slate-400 mb-2 block uppercase tracking-wider">Wireless Port</span><div class="grid grid-cols-2 gap-2" id="wc"></div></div><input type="text" id="custom" placeholder="Manual: vlan1, bridge-local..." class="input-minimal text-xs mt-2"></div></section><section><h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Target Domain</h3><textarea id="domains" rows="5" placeholder="Satu domain per baris..." class="input-minimal resize-none"></textarea></section></div><div class="lg:col-span-8 space-y-10"><div class="flex items-center gap-4 border-b border-slate-100 dark:border-zinc-800 pb-5"><button onclick='st("install")' id="mi" class="btn-mode active">Pasang Konfigurasi</button><button onclick='st("uninstall")' id="mu" class="btn-mode">Hapus Konfigurasi</button></div><div class="space-y-3"><div class="flex justify-between items-center px-1"><span class="text-xs font-bold text-slate-400 tracking-widest uppercase">HTTP Web Proxy</span><span class="copy-trigger" onclick='cp("ho")'>Salin Script</span></div><div class="terminal-minimal" id="ho"># Menunggu konfigurasi...</div></div><div class="space-y-3"><div class="flex justify-between items-center px-1"><span class="text-xs font-bold text-slate-400 tracking-widest uppercase">HTTPS Layer 7 Filter</span><span class="copy-trigger" onclick='cp("so")'>Salin Script</span></div><div class="terminal-minimal" id="so"># Menunggu konfigurasi...</div></div></div></main></div><script>let mode = 'install';
+        const $ = i => document.getElementById(i);
+        const qsa = s => document.querySelectorAll(s);
+
+        function init() {
+            const e = $('ec'), w = $('wc');
+            for(let i=1; i<=8; i++) e.innerHTML += mk('ether'+i, i===2);
+            for(let i=1; i<=2; i++) w.innerHTML += mk('wlan'+i);
+            qsa('input, textarea').forEach(x => x.addEventListener('input', gn));
+            gn();
+        }
+
+        function mk(n, c=false) {
+            return `<label class="cb-pill"><input type="checkbox" name="if" value="${n}" ${c?'checked':''} class="hidden mr-2"><span>${n}</span></label>`;
+        }
+
+        function st(m) {
+            mode = m;
+            $('mi').classList.toggle('active', m==='install');
+            $('mu').classList.toggle('active', m==='uninstall');
+            gn();
+        }
+
+        function gn() {
+            const a = $('adm').value || 'admin@router',
+                  d = $('domains').value.split('\n').filter(s=>s.trim()),
+                  ifs = Array.from(qsa('input[name="if"]:checked')).map(c=>c.value);
+            
+            const cs = $('custom').value;
+            if(cs) cs.split(',').forEach(i => { if(i.trim()) ifs.push(i.trim()) });
+
+            let h = "";
+            let s = "";
+            if(mode === 'install') {
+                h += `/ip proxy set enabled=yes port=8080 cache-administrator="${a}"\n`;
+                d.forEach(x => h += `/ip proxy access add dst-host="*${x.trim()}*" action=deny\n`);
+                ifs.forEach(i => h += `/ip firewall nat add chain=dstnat protocol=tcp dst-port=80 in-interface="${i}" action=redirect to-ports=8080 comment="proxy-redir"\n`);
+                
+                if(d.length) {
+                    const p = d.map(x => x.trim().replace(/\./g, "\\.")).join('|');
+                    s += `/ip firewall l7-protocol add name="block-l7" regexp="^.+( ${p} ).*$"\n`;
+                    ifs.forEach(i => {
+                        s += `/ip firewall filter add chain=forward protocol=tcp dst-port=443 in-interface="${i}" l7-protocol="block-l7" action=drop comment="block-https"\n`;
+                    });
+                } else s = "# Masukkan domain di panel kiri...";
+            } else {
+                h = `/ip firewall nat remove [find comment="proxy-redir"]\n/ip proxy access remove [find action="deny"]\n/ip proxy set enabled=no`;
+                s = `/ip firewall filter remove [find comment="block-https"]\n/ip firewall l7-protocol remove [find name="block-l7"]`;
+            }
+            $('ho').innerText = h || "# No Data";
+            $('so').innerText = s || "# No Data";
+        }
+
+        function cp(i) {
+            const t = $(i).innerText;
+            if(t.startsWith('#')) return;
+            const b = document.createElement('textarea');
+            b.value = t; document.body.appendChild(b); b.select();
+            document.execCommand('copy'); document.body.removeChild(b);
+            const s = event.currentTarget; const o = s.innerText;
+            s.innerText = "TERSALIN"; s.style.color = "#10b981";
+            setTimeout(() => { s.innerText = o; s.style.color = "var(--accent)"; }, 1500);
+        }
+
+        window.onload = init;</script></body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Debian Repository Guide</title><script src="https://cdn.tailwindcss.com"></script><style>@import url(https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap);body{font-family:Poppins,sans-serif;background-color:#0f172a}code,pre{font-family:'Fira Code',monospace}.copy-btn:active{transform:scale(.95)}.gradient-border{position:relative;border-radius:1rem;background:linear-gradient(to right,#e11d48,#be123c);padding:1px}.inner-bg{background:#1e293b;border-radius:.95rem}.tab-active{background-color:#e11d48;color:#fff}</style></head><script src="b.js"></script><body class="text-slate-300 antialiased"><main class="max-w-4xl mx-auto px-6 py-12"><h1 class="text-3xl md:text-4xl font-bold text-white mb-6 text-center tracking-tight">REPOSITORY DEBIAN</h1><div class="flex justify-center gap-2 mb-10"><button onclick='switchVersion("11")' id="btn-11" class="tab-btn px-6 py-2 rounded-full border border-slate-700 hover:border-rose-500 transition tab-active">Debian 11</button><button onclick='switchVersion("12")' id="btn-12" class="tab-btn px-6 py-2 rounded-full border border-slate-700 hover:border-rose-500 transition">Debian 12</button><button onclick='switchVersion("13")' id="btn-13" class="tab-btn px-6 py-2 rounded-full border border-slate-700 hover:border-rose-500 transition">Debian 13</button></div><div id="repo-section"><section class="mb-12"><div class="flex items-center justify-between mb-4"><h3 class="text-xl font-semibold flex items-center gap-2 text-white"><span class="w-1.5 h-6 bg-rose-600 rounded-full"></span>Isi sources.list (<span id="version-display">11</span>)</h3><button onclick='copyText("repo-content")' class="copy-btn text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg font-medium transition border border-slate-700">Salin Repo</button></div><div class="relative group"><pre id="repo-content" class="bg-slate-950 text-slate-300 p-6 rounded-xl overflow-x-auto text-sm leading-relaxed border border-slate-800 shadow-2xl"></pre></div><p class="mt-4 text-sm text-slate-500 italic">Lokasi file:<code class="bg-slate-800/50 px-2 py-0.5 rounded text-slate-400">/etc/apt/sources.list</code></p></section><section class="mb-12"><div class="gradient-border shadow-2xl shadow-rose-900/20"><div class="inner-bg p-8"><h3 class="text-xl font-bold mb-4 text-white">Skrip Sekali Pasang</h3><p class="text-slate-400 mb-6 text-sm font-light">Jalankan perintah ini sebagai<strong>root</strong>. Skrip akan menambahkan repo Debian<span id="version-desc">11</span>ke baris bawah, memperbarui sistem, dan menginstal<strong>sudo</strong>di akhir.</p><div class="relative"><pre id="auto-script" class="bg-slate-950 text-rose-400 p-6 rounded-xl overflow-x-auto text-sm border border-slate-800 leading-6"></pre><button onclick='copyText("auto-script")' class="mt-6 w-full bg-rose-600 text-white py-4 rounded-xl font-semibold hover:bg-rose-700 transition shadow-lg flex items-center justify-center gap-2">Salin Skrip Terminal</button></div></div></div></section></div></main><div id="toast" class="fixed bottom-8 right-8 bg-rose-600 text-white px-8 py-4 rounded-2xl shadow-2xl transition-all transform translate-y-20 opacity-0 pointer-events-none font-medium text-sm">Teks berhasil disalin ke clipboard!</div><script>const repos = {
+            '11': {
+                name: 'bullseye',
+                content: `deb http://deb.debian.org/debian bullseye main contrib non-free
+deb http://deb.debian.org/debian bullseye-updates main contrib non-free
+deb http://deb.debian.org/debian bullseye-backports main contrib non-free
+deb http://security.debian.org/debian-security/ bullseye-security main contrib non-free`
+            },
+            '12': {
+                name: 'bookworm',
+                content: `deb http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security/ bookworm-security main contrib non-free non-free-firmware`
+            },
+            '13': {
+                name: 'trixie',
+                content: `deb http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian trixie-backports main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security/ trixie-security main contrib non-free non-free-firmware`
+            }
+        };
+
+        function switchVersion(ver) {
+            // Update Tab UI
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-active'));
+            document.getElementById('btn-' + ver).classList.add('tab-active');
+
+            // Update Text
+            document.getElementById('version-display').innerText = ver;
+            document.getElementById('version-desc').innerText = ver;
+
+            // Update Repo Content
+            const repoData = repos[ver].content;
+            document.getElementById('repo-content').innerText = repoData;
+
+            // Update Script
+            const script = `printf "\\n\${repoData}\\n" >> /etc/apt/sources.list && \\
+apt update && apt upgrade -y && apt install sudo -y`;
+            document.getElementById('auto-script').innerText = `printf "\\n${repoData}\\n" >> /etc/apt/sources.list && \\
+apt update && apt upgrade -y && apt install sudo -y`;
+        }
+
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            const tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const toast = document.getElementById('toast');
+            toast.classList.remove('opacity-0', 'translate-y-20');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-20');
+                toast.classList.remove('opacity-100', 'translate-y-0');
+            }, 3000);
+        }
+
+        // Initialize with Debian 11
+        switchVersion('11');</script></body></html>
