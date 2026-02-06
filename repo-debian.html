@@ -1,65 +1,39 @@
-<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Debian Repository Guide</title><script src="https://cdn.tailwindcss.com"></script><style>@import url(https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap);body{font-family:Poppins,sans-serif;background-color:#0f172a}code,pre{font-family:'Fira Code',monospace}.copy-btn:active{transform:scale(.95)}.gradient-border{position:relative;border-radius:1rem;background:linear-gradient(to right,#e11d48,#be123c);padding:1px}.inner-bg{background:#1e293b;border-radius:.95rem}.tab-active{background-color:#e11d48;color:#fff}</style></head><script src="b.js"></script><body class="text-slate-300 antialiased"><main class="max-w-4xl mx-auto px-6 py-12"><h1 class="text-3xl md:text-4xl font-bold text-white mb-6 text-center tracking-tight">REPOSITORY DEBIAN</h1><div class="flex justify-center gap-2 mb-10"><button onclick='switchVersion("11")' id="btn-11" class="tab-btn px-6 py-2 rounded-full border border-slate-700 hover:border-rose-500 transition tab-active">Debian 11</button><button onclick='switchVersion("12")' id="btn-12" class="tab-btn px-6 py-2 rounded-full border border-slate-700 hover:border-rose-500 transition">Debian 12</button><button onclick='switchVersion("13")' id="btn-13" class="tab-btn px-6 py-2 rounded-full border border-slate-700 hover:border-rose-500 transition">Debian 13</button></div><div id="repo-section"><section class="mb-12"><div class="flex items-center justify-between mb-4"><h3 class="text-xl font-semibold flex items-center gap-2 text-white"><span class="w-1.5 h-6 bg-rose-600 rounded-full"></span>Isi sources.list (<span id="version-display">11</span>)</h3><button onclick='copyText("repo-content")' class="copy-btn text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg font-medium transition border border-slate-700">Salin Repo</button></div><div class="relative group"><pre id="repo-content" class="bg-slate-950 text-slate-300 p-6 rounded-xl overflow-x-auto text-sm leading-relaxed border border-slate-800 shadow-2xl"></pre></div><p class="mt-4 text-sm text-slate-500 italic">Lokasi file:<code class="bg-slate-800/50 px-2 py-0.5 rounded text-slate-400">/etc/apt/sources.list</code></p></section><section class="mb-12"><div class="gradient-border shadow-2xl shadow-rose-900/20"><div class="inner-bg p-8"><h3 class="text-xl font-bold mb-4 text-white">Skrip Sekali Pasang</h3><p class="text-slate-400 mb-6 text-sm font-light">Jalankan perintah ini sebagai<strong>root</strong>. Skrip akan menambahkan repo Debian<span id="version-desc">11</span>ke baris bawah, memperbarui sistem, dan menginstal<strong>sudo</strong>di akhir.</p><div class="relative"><pre id="auto-script" class="bg-slate-950 text-rose-400 p-6 rounded-xl overflow-x-auto text-sm border border-slate-800 leading-6"></pre><button onclick='copyText("auto-script")' class="mt-6 w-full bg-rose-600 text-white py-4 rounded-xl font-semibold hover:bg-rose-700 transition shadow-lg flex items-center justify-center gap-2">Salin Skrip Terminal</button></div></div></div></section></div></main><div id="toast" class="fixed bottom-8 right-8 bg-rose-600 text-white px-8 py-4 rounded-2xl shadow-2xl transition-all transform translate-y-20 opacity-0 pointer-events-none font-medium text-sm">Teks berhasil disalin ke clipboard!</div><script>const repos = {
-            '11': {
-                name: 'bullseye',
-                content: `deb http://deb.debian.org/debian bullseye main contrib non-free
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mirror Repositori Debian</title><link rel="icon" type="image/x-icon" href="icon.svg"><link rel="icon" type="image/x-icon" href="icon.svg"><style>:root{--bg-color:#0f172a;--card-bg:#1e293b;--text-main:#f8fafc;--text-dim:#94a3b8;--accent:#38bdf8;--code-bg:#000;--border:#334155;--success:#22c55e}*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background-color:var(--bg-color);color:var(--text-main);line-height:1.6;padding:20px}.container{max-width:1000px;margin:0 auto}header{text-align:center;padding:40px 0;border-bottom:1px solid var(--border);margin-bottom:40px}h1{font-size:2.5rem;color:var(--accent);margin-bottom:10px}p.subtitle{color:var(--text-dim);font-size:1.1rem}.section{background-color:var(--card-bg);padding:25px;border-radius:12px;margin-bottom:30px;border:1px solid var(--border)}h2{margin-bottom:20px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--accent);padding-bottom:5px;width:fit-content}.repo-box{background-color:var(--code-bg);padding:15px;border-radius:8px;position:relative;margin-top:10px;overflow-x:auto}pre{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:.85rem;color:#e2e8f0;white-space:pre}.copy-btn{position:absolute;top:10px;right:10px;background-color:var(--accent);color:var(--bg-color);border:none;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:.75rem;font-weight:700;z-index:10}.copy-btn:hover{opacity:.9}.instruction{margin-top:20px}.step{margin-bottom:15px}.step-num{background-color:var(--accent);color:var(--bg-color);width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-weight:700;margin-right:10px}code.inline{background-color:rgba(255,255,255,.1);padding:2px 6px;border-radius:4px;font-family:monospace}footer{text-align:center;margin-top:50px;color:var(--text-dim);font-size:.85rem;padding-bottom:30px}@media (max-width:600px){h1{font-size:1.8rem}body{padding:10px}pre{font-size:.75rem}}</style></head><body><div class="container"><header><h1>Debian Repository</h1><p class="subtitle">Konfigurasi sources.list lengkap (Binary & Source)</p></header><div class="section"><h2>Debian 13 (Trixie) - Testing</h2><p>Termasuk backports, proposed-updates, dan source repositories.</p><div class="repo-box"><button class="copy-btn" onclick="copyText('repo13')">Salin</button><pre id="repo13"># Debian 13 Trixie - Main
+deb http://deb.debian.org/debian/ trixie main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian/ trixie main contrib non-free non-free-firmware
+
+# Updates & Security
+deb http://deb.debian.org/debian/ trixie-updates main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian/ trixie-updates main contrib non-free non-free-firmware
+
+deb http://deb.debian.org/debian-security/ trixie-security main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian-security/ trixie-security main contrib non-free non-free-firmware
+
+# Backports & Proposed Updates
+deb http://deb.debian.org/debian/ trixie-backports main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian/ trixie-backports main contrib non-free non-free-firmware
+
+deb http://deb.debian.org/debian/ trixie-proposed-updates main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian/ trixie-proposed-updates main contrib non-free non-free-firmware</pre></div></div><div class="section"><h2>Debian 12 (Bookworm) - Stable</h2><p>Konfigurasi standar untuk sistem produksi stabil.</p><div class="repo-box"><button class="copy-btn" onclick="copyText('repo12')">Salin</button><pre id="repo12"># Debian 12 Bookworm - Main
+deb https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+deb-src https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+
+# Updates & Security
+deb https://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
+deb-src https://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
+
+deb https://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+deb-src https://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware</pre></div></div><div class="section"><h2>Debian 11 (Bullseye) - Oldstable</h2><p>Lengkap dengan backports dan source repositories.</p><div class="repo-box"><button class="copy-btn" onclick="copyText('repo11')">Salin</button><pre id="repo11"># Debian 11 Bullseye - Main
+deb http://deb.debian.org/debian bullseye main contrib non-free
+deb-src http://deb.debian.org/debian bullseye main contrib non-free
+
+# Updates & Security
 deb http://deb.debian.org/debian bullseye-updates main contrib non-free
+deb-src http://deb.debian.org/debian bullseye-updates main contrib non-free
+
+deb http://security.debian.org/debian-security bullseye-security main contrib non-free
+deb-src http://security.debian.org/debian-security bullseye-security main contrib non-free
+
+# Backports
 deb http://deb.debian.org/debian bullseye-backports main contrib non-free
-deb http://security.debian.org/debian-security/ bullseye-security main contrib non-free`
-            },
-            '12': {
-                name: 'bookworm',
-                content: `deb http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
-deb http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
-deb http://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
-deb http://security.debian.org/debian-security/ bookworm-security main contrib non-free non-free-firmware`
-            },
-            '13': {
-                name: 'trixie',
-                content: `deb http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
-deb http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
-deb http://deb.debian.org/debian trixie-backports main contrib non-free non-free-firmware
-deb http://security.debian.org/debian-security/ trixie-security main contrib non-free non-free-firmware`
-            }
-        };
-
-        function switchVersion(ver) {
-            // Update Tab UI
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-active'));
-            document.getElementById('btn-' + ver).classList.add('tab-active');
-
-            // Update Text
-            document.getElementById('version-display').innerText = ver;
-            document.getElementById('version-desc').innerText = ver;
-
-            // Update Repo Content
-            const repoData = repos[ver].content;
-            document.getElementById('repo-content').innerText = repoData;
-
-            // Update Script
-            const script = `printf "\\n\${repoData}\\n" >> /etc/apt/sources.list && \\
-apt update && apt upgrade -y && apt install sudo -y`;
-            document.getElementById('auto-script').innerText = `printf "\\n${repoData}\\n" >> /etc/apt/sources.list && \\
-apt update && apt upgrade -y && apt install sudo -y`;
-        }
-
-        function copyText(elementId) {
-            const text = document.getElementById(elementId).innerText;
-            const tempInput = document.createElement("textarea");
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-
-            const toast = document.getElementById('toast');
-            toast.classList.remove('opacity-0', 'translate-y-20');
-            toast.classList.add('opacity-100', 'translate-y-0');
-            
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-20');
-                toast.classList.remove('opacity-100', 'translate-y-0');
-            }, 3000);
-        }
-
-        // Initialize with Debian 11
-        switchVersion('11');</script></body></html>
+deb-src http://deb.debian.org/debian bullseye-backports main contrib non-free</pre></div></div><div class="section"><h2>Cara Pemasangan</h2><div class="instruction"><div class="step"><span class="step-num">1</span> Backup file lama: <code class="inline">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak</code></div><div class="step"><span class="step-num">2</span> Edit file: <code class="inline">sudo nano /etc/apt/sources.list</code></div><div class="step"><span class="step-num">3</span> Ganti seluruh isi file dengan daftar yang Anda salin di atas.</div><div class="step"><span class="step-num">4</span> Jalankan update: <code class="inline">sudo apt update</code></div></div></div><footer><p>&copy; 2024 - Mirror Debian Indonesia Terlengkap. Dibuat dengan HTML/CSS murni.</p></footer></div><script>function copyText(e){const t=document.getElementById(e).innerText,n=document.createElement("textarea");document.body.appendChild(n),n.value=t,n.select(),document.execCommand("copy"),document.body.removeChild(n);const o=event.target,r=o.innerText;o.innerText="Tersalin!",o.style.backgroundColor="#22c55e",setTimeout(()=>{o.innerText=r,o.style.backgroundColor="#38bdf8"},2e3)}</script></body></html>
