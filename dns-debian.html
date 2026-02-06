@@ -1,46 +1,116 @@
-<!doctypehtml><html lang=id><meta charset=UTF-8><meta content="width=device-width,initial-scale=1"name=viewport><title>Bind9 DNS Generator</title><script src=b.js></script><link href=icon.svg rel=icon type=image/x-icon><style>:root{--bg:#030712;--card:#111827;--primary:#6366f1;--primary-hover:#818cf8;--text-main:#f3f4f6;--text-muted:#9ca3af;--border:rgba(255, 255, 255, 0.1);--code-bg:#000000}*{box-sizing:border-box;margin:0;padding:0}body{background-color:var(--bg);color:var(--text-main);font-family:system-ui,-apple-system,sans-serif;line-height:1.5;display:flex;justify-content:center;padding:20px}.container{width:100%;max-width:800px;margin-top:2rem}header{text-align:center;margin-bottom:2.5rem}header h1{font-size:1.8rem;font-weight:800;letter-spacing:-.025em}header span{color:var(--primary)}.card{background:var(--card);border:1px solid var(--border);border-radius:1.5rem;padding:2rem;box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}@media (max-width:640px){.grid{grid-template-columns:1fr}}label{display:block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:.5rem}input{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:.75rem;padding:.75rem 1rem;color:#fff;font-size:1rem;transition:border .2s}input:focus{outline:0;border-color:var(--primary)}button.btn-primary{width:100%;background:var(--primary);color:#fff;border:none;padding:1rem;border-radius:.75rem;font-weight:700;cursor:pointer;transition:background .2s}button.btn-primary:hover{background:var(--primary-hover)}.tabs{display:flex;background:rgba(0,0,0,.2);padding:.4rem;border-radius:1rem;border:1px solid var(--border);margin-top:2rem;gap:.4rem}.tab-btn{flex:1;padding:.75rem;border-radius:.7rem;background:0 0;border:none;color:var(--text-muted);font-weight:700;font-size:.75rem;cursor:pointer}.tab-btn.active{background:var(--primary);color:#fff}#res{margin-top:1.5rem;display:none}.hidden{display:none}.code-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;padding:0 .5rem}.copy-btn{color:var(--primary-hover);background:0 0;border:none;font-size:.7rem;font-weight:700;cursor:pointer;text-transform:uppercase}pre{background:var(--code-bg);color:#a5f3fc;padding:1.25rem;border-radius:1rem;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.85rem;overflow-x:auto;border:1px solid rgba(255,255,255,.05);line-height:1.6}.custom-alert{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:.75rem 1.5rem;border-radius:2rem;font-size:.875rem;font-weight:600;display:none;box-shadow:0 10px 15px -3px rgba(0,0,0,.3);z-index:1000}</style><div class=custom-alert id=copyAlert>Berhasil disalin!</div><div class=container><header><h1>Bind9 <span>DNS</span> Generator</h1></header><div class=card><div class=grid><div><label>Nama Domain</label> <input id=domain placeholder=example.com value=michellino.tyz.pro></div><div><label>IP Address Server</label> <input id=ip placeholder=192.168.1.1 value=10.119.181.165></div></div><button class=btn-primary onclick=generate()>Generate Konfigurasi</button></div><div id=res><div class=tabs><button class="tab-btn active"onclick='tab("i")'id=t1>01. INSTALL</button> <button class=tab-btn onclick='tab("c")'id=t2>02. CONFIGURE</button></div><div id=si style=margin-top:1.5rem><div class=code-header><label>Script Instalasi</label> <button class=copy-btn onclick='cp("oi")'>Salin Kode</button></div><pre id=oi></pre></div><div class=hidden id=sc style=margin-top:1.5rem><div class=code-header><label>Konfigurasi File Zona</label> <button class=copy-btn onclick='cp("oc")'>Salin Kode</button></div><pre id=oc></pre></div></div></div><script>const $ = id => document.getElementById(id);
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bind9 DNS</title>
+    <script src="b.js"></script>
+    <link rel="icon" type="image/x-icon" href="icon.svg">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem; }
+        .container { width: 100%; max-width: 850px; }
+        header { text-align: center; margin-bottom: 2.5rem; }
+        h1 { font-size: 2rem; font-weight: 800; }
+        .text-indigo { color: #6366f1; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.5rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        @media (min-width: 768px) { .grid { grid-template-columns: 1fr 1fr; } }
+        label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #94a3b8; margin-bottom: 0.5rem; }
+        input { width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 0.8rem; border-radius: 0.75rem; outline: none; }
+        input:focus { border-color: #6366f1; }
+        button.btn-primary { width: 100%; background: #4f46e5; color: white; border: none; padding: 1rem; border-radius: 0.75rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        button.btn-primary:hover { background: #6366f1; transform: translateY(-1px); }
+        .tab-container { display: flex; background: #0f172a; padding: 0.3rem; border-radius: 0.8rem; border: 1px solid #334155; margin-bottom: 1rem; }
+        .tab-btn { flex: 1; background: transparent; border: none; color: #64748b; padding: 0.6rem; font-size: 0.7rem; font-weight: 700; border-radius: 0.6rem; cursor: pointer; }
+        .tab-btn.active { background: #1e293b; color: white; }
+        .output-box { position: relative; }
+        .btn-copy { position: absolute; top: 0.5rem; right: 0.5rem; background: #334155; color: #818cf8; border: none; padding: 0.4rem 0.8rem; border-radius: 0.4rem; font-size: 0.6rem; font-weight: 800; cursor: pointer; }
+        pre { background: #020617; padding: 1.25rem; border-radius: 1rem; overflow-x: auto; font-family: 'Consolas', monospace; font-size: 0.8rem; line-height: 1.5; color: #cbd5e1; border: 1px solid #1e293b; min-height: 100px; white-space: pre-wrap; word-break: break-all; }
+        .hidden { display: none; }
+        .custom-alert { position: fixed; top: 1rem; right: 1rem; background: #10b981; color: white; padding: 0.8rem 1.5rem; border-radius: 0.5rem; display: none; z-index: 100; font-weight: bold; }
+        .warning { background: #450a0a; border: 1px solid #991b1b; padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem; font-size: 0.8rem; color: #fecaca; }
+    </style>
+</head>
+<body>
+    <div id="copyAlert" class="custom-alert">Copied!</div>
+    <div class="container">
+        <header>
+            <h1>Bind9 <span class="text-indigo">DNS</span></h1>
+        </header>
+
+        <div class="glass">
+            <div class="warning">
+                <strong>INFO:</strong> Aduhai malass nyoo...
+            </div>
+            <div class="grid">
+                <div>
+                    <label>Nama Domain</label>
+                    <input type="text" id="domain" value="michellino.tyz" placeholder="domain.com">
+                </div>
+                <div>
+                    <label>IP Server</label>
+                    <input type="text" id="ip" value="172.16.117.105" placeholder="1.2.3.4">
+                </div>
+            </div>
+            <button onclick="generate()" class="btn-primary">Generate Clean Code</button>
+        </div>
+
+        <div id="res" class="hidden">
+            <div class="tab-container">
+                <button id="t1" onclick="tab('i')" class="tab-btn active">STEP 1: INSTALL</button>
+                <button id="t2" onclick="tab('c')" class="tab-btn">STEP 2: CONFIG</button>
+            </div>
+            
+            <div id="si" class="output-box">
+                <button onclick="cp('oi')" class="btn-copy">COPY</button>
+                <pre id="oi"></pre>
+            </div>
+
+            <div id="sc" class="output-box hidden">
+                <button onclick="cp('oc')" class="btn-copy">COPY</button>
+                <pre id="oc"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const $ = id => document.getElementById(id);
+        
         function tab(t){
-            const i = t === 'i';
-            $('t1').className = i ? 'tab-btn active' : 'tab-btn';
-            $('t2').className = !i ? 'tab-btn active' : 'tab-btn';
-            $('si').classList.toggle('hidden', !i);
-            $('sc').classList.toggle('hidden', i);
+            const isInstall = t === 'i';
+            $('t1').classList.toggle('active', isInstall);
+            $('t2').classList.toggle('active', !isInstall);
+            $('si').classList.toggle('hidden', !isInstall);
+            $('sc').classList.toggle('hidden', isInstall);
         }
 
-        const pad = (text, length) => {
-            const str = String(text);
-            return str + ' '.repeat(Math.max(1, length - str.length));
-        };
+        const pad = (text, length) => String(text).padEnd(length, ' ');
 
         function generate(){
-            const d = $('domain').value, ip = $('ip').value;
+            const d = $('domain').value.trim(), ip = $('ip').value.trim();
             if(!d || !ip) return;
-            
+
             const p = ip.split('.');
             if(p.length !== 4) return;
 
-            const rv = `${p[2]}.${p[1]}.${p[0]}.in-addr.arpa`, df = d.split('.')[0];
-            const s = new Date().toISOString().slice(0,10).replace(/-/g,'') + '01';
+            const rvZone = `${p[2]}.${p[1]}.${p[0]}.in-addr.arpa`;
+            const df = d.split('.')[0];
+            const serial = new Date().toISOString().slice(0,10).replace(/-/g,'') + '01';
             
-            $('oi').textContent = `apt update && apt install bind9 dnsutils -y`;
+            $('oi').textContent = `apt update && apt install bind9 dnsutils -y\ncp /etc/bind/named.conf.local /etc/bind/named.conf.local.bak`;
             
-            const valWidth = 12; 
-
-            const zoneContent = (isRev = false) => `;
-; BIND ${isRev ? 'Reverse ' : ''}Data file for ${d}
-;
-$TTL    604800
+            const zoneContent = (isRev = false) => `\\$TTL    604800
 @       IN      SOA     ${d}. root.${d}. (
-                        ${pad(s, valWidth)}; Serial
-                        ${pad('604800', valWidth)}; Refresh
-                        ${pad('86400', valWidth)}; Retry
-                        ${pad('2419200', valWidth)}; Expire
-                        ${pad('604800 )', valWidth)}; Negative Cache TTL
+                        ${pad(serial, 12)} ; Serial
+                        ${pad('604800', 12)} ; Refresh
+                        ${pad('86400', 12)} ; Retry
+                        ${pad('2419200', 12)} ; Expire
+                        ${pad('604800 )', 12)} ; Negative Cache TTL
 ;
 @       IN      NS      ${d}.
 ${isRev ? pad(p[3], 8) : pad('@', 8)}IN      ${isRev ? 'PTR     ' + d + '.' : 'A       ' + ip}
-${isRev ? '' : pad('www', 8) + 'IN      A       ' + ip}
-EOF`;
+${isRev ? '' : pad('www', 8) + 'IN      A       ' + ip}`;
 
             $('oc').textContent = `cat <<EOF > /etc/bind/named.conf.local
 zone "${d}" {
@@ -48,7 +118,7 @@ zone "${d}" {
     file "/etc/bind/db.${df}";
 };
 
-zone "${rv}" {
+zone "${rvZone}" {
     type master;
     file "/etc/bind/db.rev";
 };
@@ -56,30 +126,39 @@ EOF
 
 cat <<EOF > /etc/bind/db.${df}
 ${zoneContent(false)}
+EOF
 
 cat <<EOF > /etc/bind/db.rev
 ${zoneContent(true)}
+EOF
 
 echo "nameserver ${ip}" > /etc/resolv.conf
+
+named-checkconf
+named-checkzone ${d} /etc/bind/db.${df}
+named-checkzone ${rvZone} /etc/bind/db.rev
+
 systemctl restart bind9
+systemctl status bind9 --no-pager
 nslookup ${d}`;
             
-            $('res').style.display = 'block';
+            $('res').classList.remove('hidden');
         }
 
         function cp(id){
             const text = $(id).textContent;
             const textArea = document.createElement('textarea');
             textArea.value = text;
+            textArea.style.position = 'fixed';
             document.body.appendChild(textArea);
             textArea.select();
-            try {
-                document.execCommand('copy');
-                const alert = $('copyAlert');
-                alert.style.display = 'block';
-                setTimeout(() => { alert.style.display = 'none'; }, 2000);
-            } catch (err) {
-                console.error('Gagal menyalin', err);
-            }
+            document.execCommand('copy');
             document.body.removeChild(textArea);
-        }</script>
+            
+            const alert = $('copyAlert');
+            alert.style.display = 'block';
+            setTimeout(() => { alert.style.display = 'none'; }, 2000);
+        }
+    </script>
+</body>
+</html>
